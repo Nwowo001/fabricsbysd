@@ -4,7 +4,7 @@ import background from "../../assets/background.png";
 import me from "../../assets/me.jpg";
 import product1 from "../../assets/product1.jpg";
 import product2 from "../../assets/product2.jpg";
-import product3 from "../../assets/product 3.jpg";
+import product3 from "../../assets/product3.jpg";
 import product4 from "../../assets/product4.jpg";
 import product5 from "../../assets/product5.jpg";
 import product6 from "../../assets/product6.jpg";
