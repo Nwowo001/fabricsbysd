@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Section.css";
 import background from "../../assets/background.png";
 import me from "../../assets/me.jpg";
@@ -19,38 +19,34 @@ import { faClose, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 const Section = () => {
-  // State to handle modal functionality
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedTitle, setSelectedTitle] = useState("");
 
   const products = [
-    { src: product1, title: "Customer in fabricsbysd RTW" },
+    { src: product1, title: "Customer in fabricsbysd RTW" },
     { src: product2, title: "Customer in Ankara print" },
-    { src: product3, title: "Customer in fabricsbysd RTW" },
+    { src: product3, title: "Customer in fabricsbysd RTW" },
     { src: product4, title: "Some Adire print samples" },
     { src: product5, title: "Some Adire print samples" },
     { src: product6, title: "Some Adire print samples" },
     { src: product7, title: "Some Ankara print samples" },
     { src: product8, title: "Ankara print samples" },
-    { src: product9, title: "Customer (left) in Ankara print" },
-    { src: product10, title: "An ankara print" },
-    { src: product11, title: "Customer rocking an Ankara print" },
+    { src: product9, title: "Customer (left) in Ankara print" },
+    { src: product10, title: "An Ankara print" },
+    { src: product11, title: "Customer rocking an Ankara print" },
     { src: product12, title: "Some Adire prints" },
   ];
 
-  // Function to open modal with selected image and title
   const handleImageClick = (image, title) => {
     setSelectedImage(image);
     setSelectedTitle(title);
   };
 
-  // Function to close modal
   const closeModal = () => {
     setSelectedImage(null);
     setSelectedTitle("");
   };
 
-  // Function to handle WhatsApp redirection
   const handleWhatsAppOrder = () => {
     const phoneNumber = "+2348163073894"; // Registered WhatsApp number
     const message = encodeURIComponent(
@@ -59,17 +55,27 @@ const Section = () => {
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
   };
 
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape") closeModal();
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
   return (
     <div>
       {/* Hero Section */}
       <section className="home" id="home">
         <div className="hero-container">
-          <img src={background} alt="Background" className="hero-image" />
+          <img src={background} alt="Hero background" className="hero-image" />
           <div className="hero-content">
             <h1>Welcome to FabricsBySD</h1>
             <p>
-              Discover the best solutions for your needs. Let’s build something
-              amazing together!
+              Discover the best solutions for your needs. Let’s build your
+              amazing wardrobe together!
             </p>
             <a href="#about" className="cta-button">
               Learn More
@@ -84,24 +90,24 @@ const Section = () => {
           <h2>About Us</h2>
           <div className="about-content">
             <div className="about-pic">
-              <img src={me} alt="Sarah" />
+              <img src={me} alt="Sarah Dogara - CEO" />
               <p className="about-name">
-                Miss. Sarah Dogara
+                Sarah Dogara
                 <br />
-                <strong>CEO, FabricsBySD</strong>
+                <strong>CEO, fabricsbySD</strong>
               </p>
             </div>
             <div className="about-text">
-              <h3>FabricsBySD: Taking African Prints to the World</h3>
+              <h3>fabricsbySD: Taking African Prints to the World</h3>
               <p>
-                Welcome to FabricsBySD, where we bring the beauty and vibrancy
+                Welcome to fabricsbySD, where we bring the beauty and vibrancy
                 of African fabrics to the world. Our mission is simple: share
                 the bold, colourful patterns of Ankara and Adire with global
                 fashion lovers, while supporting African artisans and promoting
                 sustainability.
               </p>
               <p>
-                At FabricsBySD, we offer a stunning collection of authentic
+                At fabricsbySD, we offer a stunning collection of authentic
                 African fabrics, known for their striking colours and rich
                 cultural significance. Whether you're looking for fabric to
                 create your designs, update your wardrobe, or add unique accents
@@ -142,16 +148,13 @@ const Section = () => {
                 <img
                   src={product.src}
                   alt={product.title}
+                  loading="lazy"
                   onClick={() => handleImageClick(product.src, product.title)}
                 />
                 <p className="product-title">{product.title}</p>
               </div>
             ))}
           </div>
-          <p>
-            Can't find what you are looking for? Don't worry, just reach out to
-            us with what you want and we will deliver.
-          </p>
         </div>
       </section>
 
@@ -159,7 +162,11 @@ const Section = () => {
       {selectedImage && (
         <div className="modal">
           <div className="modal-content">
-            <button className="close-button" onClick={closeModal}>
+            <button
+              className="close-button"
+              onClick={closeModal}
+              aria-label="Close modal"
+            >
               <FontAwesomeIcon icon={faClose} />
             </button>
             <img
@@ -168,11 +175,6 @@ const Section = () => {
               className="modal-image"
             />
             <p>{selectedTitle}</p>
-            <p>
-              Want to place an order? Please contact us on WhatsApp:
-              <br />
-              <FontAwesomeIcon icon={faWhatsapp} /> 08163073894
-            </p>
             <button
               className="add-to-cart-button"
               onClick={handleWhatsAppOrder}
@@ -188,16 +190,17 @@ const Section = () => {
         <div className="contacts-container">
           <h2>Contact Us</h2>
           <p>
-            Feel free to reach out for more information or to discuss your
-            requirements!
+            For inquiries, call:
+            <a href="tel:+2348163073894">
+              <FontAwesomeIcon icon={faPhone} /> 08163073894
+            </a>{" "}
+            or email us at:
+            <a href="mailto:fabricsbysd@gmail.com">fabricsbysd@gmail.com</a>
           </p>
           <p>
-            For more inquiries call:
-            <FontAwesomeIcon icon={faPhone} /> 08163073894 or send us an email
-            at fabricsbysd@gmail.com
+            Follow us:
+            <FontAwesomeIcon icon={faInstagram} /> fabricsbysd
           </p>
-          Follow us on social media at
-          <FontAwesomeIcon icon={faInstagram} /> fabricsbysd
         </div>
       </section>
       <footer className="footer">
